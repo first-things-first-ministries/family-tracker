@@ -51,6 +51,10 @@ h1{font-size:30px;margin:0;line-height:1.1}h2{font-size:21px;margin:22px 0 10px}
 .statusrow{display:flex;justify-content:space-between;align-items:center;margin:8px 0 4px;gap:8px}
 .pill{font-size:14px;color:var(--mute)}.pill.ok{color:var(--ok)}.pill.warn{color:var(--warn)}
 .linkish{background:none;border:0;color:var(--mute);font-size:15px;padding:8px 0;min-height:44px;text-align:right}
+/* 1.13.17 (Designer, 320 fold): 'Logging as' = small text under the title (44px tap box, pulled up so it reads as a subline); status row stays one line */
+.top .ttl{min-width:0;flex:1 1 auto}.linkish.who{display:block;max-width:100%;font-size:14px;padding:0;min-height:44px;margin:-6px 0 -8px;text-align:left;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.statusrow{flex-wrap:nowrap;justify-content:flex-start}.statusrow .pill{white-space:nowrap}
+.pill.sfpill{background:none;border:0;padding:0 4px;margin:0;min-height:44px;font:inherit;font-size:14px;color:var(--warn);cursor:pointer;text-decoration:underline dotted;text-underline-offset:3px}.sfsheet .sfmsg{font-size:18px;font-weight:600;line-height:1.4;margin:4px 0 16px}
 .cards{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:10px 0}
 .card{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:12px;text-align:left;box-shadow:var(--shadow);display:block;width:100%}
 .cards .card:last-child{grid-column:1/-1}
@@ -96,7 +100,7 @@ h1{font-size:30px;margin:0;line-height:1.1}h2{font-size:21px;margin:22px 0 10px}
 .shoprow{display:flex;gap:8px;align-items:center}
 .check{flex:1;display:flex;gap:12px;align-items:center;background:var(--card);border:1px solid var(--line);border-radius:14px;padding:10px 12px;min-height:60px;text-align:left}
 .box{flex:none;width:32px;height:32px;border-radius:9px;border:2.5px solid var(--pri);display:flex;align-items:center;justify-content:center;font-weight:800;color:var(--priink)}
-.done .box{background:var(--pri)}.done .stext{text-decoration:line-through;color:var(--mute)}
+.done .box{background:var(--pri)}.nbox{position:relative}.done .nbox::after{content:'';position:absolute;left:9px;top:3px;width:8px;height:15px;border:solid currentColor;border-width:0 3.5px 3.5px 0;transform:rotate(45deg)}#main::after{content:'';display:block;height:var(--toastpad,0px)}.tsum{margin:8px 0}.tsum>summary.tsumline{list-style:none;min-height:44px;display:flex;align-items:center;justify-content:space-between;gap:8px;padding:6px 12px;border:1px solid var(--line);border-radius:12px;background:var(--card);color:var(--ink);font-weight:600;font-variant-numeric:tabular-nums;cursor:pointer}.tsum>summary::-webkit-details-marker{display:none}.tsum>summary::after{content:'›';color:var(--mute)}.tsum[open]>summary::after{content:'⌄'}.tsum>.cards{margin-top:8px}#toast.qpop>.qrow{flex-shrink:0}#toast{--qpbg:var(--ink)}#toast.qpop::after{content:'';display:none;position:sticky;bottom:-10px;flex:0 0 36px;margin-top:-36px;pointer-events:none;background:linear-gradient(rgba(0,0,0,0),var(--qpbg))}#toast.qpop.qmore::after{display:block}#toast .qhead{justify-content:flex-end}#toast .qhead>span{flex:1 1 auto;min-width:0}#toast .qhead>button:first-of-type{margin-left:auto}.done .stext{text-decoration:line-through;color:var(--mute)}
 .stext .tiny{text-decoration:none}
 nav#nav{position:relative;flex:0 0 auto;width:100%;background:var(--card);border-top:1px solid var(--line);display:grid;grid-template-columns:repeat(5,1fr);padding-bottom:var(--sab);z-index:5}
 nav#nav button{background:none;border:0;min-height:68px;display:flex;flex-direction:column;align-items:center;justify-content:center;font-size:13px;font-weight:600;color:var(--mute);gap:2px}
@@ -141,6 +145,11 @@ details{margin:10px 0}summary{min-height:44px;display:flex;align-items:center;fo
 .nb{display:flex;align-items:center;gap:8px;width:100%;min-height:44px;margin:0 0 8px;padding:8px 14px;border-radius:14px;border:1px solid transparent;background:var(--nbbg);color:var(--nbink);font-size:17px;font-weight:600;text-align:left;transition:background-color .6s,color .6s}
 .nb .nbi{font-size:18px}.nb>span:nth-child(2){flex:1}.nb .nbt{font-variant-numeric:tabular-nums;font-weight:800}
 .nb .nbe{font-size:13px;font-weight:600;opacity:.75;white-space:nowrap}
+/* 1.13.17 (Designer): next-feed banner is ONE line, max 44px; ellipsize, never wrap */
+.nb{height:44px;max-height:44px;padding-top:0;padding-bottom:0;white-space:nowrap;overflow:hidden}.nb .nbm{flex:1 1 auto;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+@media (max-width:360px){.nb{font-size:15px;padding-left:12px;padding-right:12px}}
+/* 1.13.17 (320 fold): tighter vertical rhythm on narrow or short screens; tap targets unchanged */
+@media (max-width:340px),(max-height:600px){#main{padding-top:8px}.top{padding-top:2px}.statusrow{margin:4px 0 2px}.nb{margin-bottom:6px}.quick{margin:8px 0;gap:8px}}
 .nb.soon{background:var(--nbsoon);color:var(--nbsoonink);border-color:var(--nbsoonline)}
 .nb.due{background:var(--nbdue);color:var(--nbdueink);border-color:var(--nbdueline)}
 .nb.run{background:var(--feed);color:var(--ink);border-color:var(--pri)}
@@ -191,12 +200,12 @@ details{margin:10px 0}summary{min-height:44px;display:flex;align-items:center;fo
 a.entry.dashlink{color:var(--ink);text-decoration:none} /* links default to UA blue: fails contrast on the dark card */
 :root[data-night] .hpill.on{background:var(--card);color:var(--ink);border-color:var(--pri)} /* night: no bright fill */
 :root[data-night]{--link:#ffd0c0;--bg:#0d0504;--card:#1c0b08;--ink:#ffb8a6;--mute:#d9937f;--line:#4a1f17;--pri:#ff8f70;--priink:#0d0504;--feed:#2a100b;--diaper:#22100c;--mom:#26100d;--ok:#ffb8a6;--warn:#ffb070;--bad:#ff9a8a;--badbg:#2e0d0a;--chip:#26100c;--shadow:none;--nbbg:#22100c;--nbink:#ffb8a6;--nbsoon:#2a140c;--nbsoonink:#ffc09a;--nbsoonline:#7a3a24;--nbdue:#331509;--nbdueink:#ffc08a;--nbdueline:#8f4a2e}
-:root[data-night] #toast{background:#2a0f0a;color:#ffc8b8;border:1px solid #6a2a1c}:root[data-night] #toast button{color:#ffd8cc;background:transparent}
+:root[data-night] #toast{--qpbg:#2a0f0a;background:#2a0f0a;color:#ffc8b8;border:1px solid #6a2a1c}:root[data-night] #toast button{color:#ffd8cc;background:transparent}
 :root[data-night] img{filter:sepia(1) saturate(3) hue-rotate(-30deg) brightness(.7)}
 .nightrow{display:flex;justify-content:flex-end;margin:6px 0 -4px}
 .night{display:flex;flex-direction:column;min-height:100%}.nhead{display:flex;justify-content:space-between;align-items:center;gap:10px}.nhead h1{font-size:26px}
 .nstat{font-size:20px;margin:4px 0 8px}.nsteps h2{font-size:18px;margin:6px 0}.nchk{list-style:none;padding:0;margin:0;display:flex;flex-direction:column;gap:6px}.nchk .check{width:100%}.nsub{margin:4px 0 4px 52px}.nsub .chip{min-height:44px}.nsnug{font-size:18px;opacity:.85}.holddone{margin-top:6px;padding:10px 12px;border-radius:12px;border:2px solid var(--line);background:var(--card);font-size:20px;font-weight:700}.nchk .check{min-height:56px}.nby{font-weight:400;font-size:14px}
-.nzone{margin-top:auto;padding-top:12px;display:flex;flex-direction:column;gap:10px}
+.nzone{padding:4px 0 12px;display:flex;flex-direction:column;gap:10px}.nsteps h2 .ncount{font-weight:400;font-size:15px;margin-left:6px;font-variant-numeric:tabular-nums}@media (max-width:360px){.nstat{font-size:18px}}
 .nzone .row2,.nzone .row3{display:grid;gap:10px}.nzone .row2{grid-template-columns:1fr 1fr}.nzone .row3{grid-template-columns:1fr 1fr 1fr}
 .nbtn{position:relative;min-height:84px;border-radius:20px;border:2px solid var(--line);background:var(--card);color:var(--ink);font-size:22px;font-weight:700}
 .nbtn.feed{background:var(--feed)}.nbtn.on{border-color:var(--pri);outline:3px solid var(--pri)}.nhint{position:absolute;top:6px;right:10px;font-size:13px;background:var(--pri);color:var(--priink);border-radius:8px;padding:1px 6px}
@@ -272,12 +281,30 @@ html.boardmode #toast button{min-height:88px;min-width:88px;font-size:26px;paddi
 .pslist{list-style:none;margin:8px 0 0;padding:0;display:grid;gap:8px}.psbtn{width:100%;min-height:56px;display:flex;justify-content:space-between;align-items:center;gap:10px;text-align:left;background:var(--card);color:var(--ink);border:2px solid var(--line);border-radius:14px;padding:8px 12px;font:inherit}
 .psbtn.done{border-color:var(--ok)}.psstate{white-space:nowrap;font-weight:600}.psinfo{margin:4px 2px 0;font-size:.9rem;color:var(--mute)}.psstart{margin-top:10px;min-height:56px}.psx{min-height:44px}
 .row1{display:grid;margin-top:10px}.settle{width:100%;min-height:56px}
+/* 1.13.17 (Designer): night Settling sits in .nzone: 72px tall like the other night buttons, one-line label, no wrap */
+.nzone .settle{min-height:72px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.nzone .settle .qi{margin-right:8px}
 .bps{margin:16px 0}.bps .pshead h2{font-size:32px}.bps .pslist{gap:16px}.bps .psbtn{min-height:88px;font-size:28px}.bps .psinfo{font-size:28px}.bps .psx,.bps .psstart{min-height:88px;font-size:28px;min-width:88px}.bsettle{min-height:88px;font-size:28px;margin-top:16px;width:100%}
 .diag dl,.diagl{display:grid;grid-template-columns:max-content 1fr;gap:6px 12px;margin:0}.diagl dt{font-weight:600}.diagl dd{margin:0;overflow-wrap:anywhere}.diagr{margin:0;padding-left:18px}.fp{font-family:ui-monospace,monospace;letter-spacing:.05em}
 .mvcheck{border:2px solid #3a8f5c;border-radius:14px;padding:12px 14px;margin:0 0 14px}.mvcheck h2{font-size:1.05rem;margin:0 0 8px}.mvcheck.red{border-color:#c0392b;background:rgba(192,57,43,.08)}
 .bdiag{margin-top:16px}.bdiag summary{list-style:none;min-height:88px;display:flex;align-items:center;justify-content:center;font-size:28px}.bdiag .diag{font-size:24px}
 .lonely .btitle{font-size:1.25rem}.boardmode .lonely{font-size:28px}.boardmode .lonely .btitle{font-size:34px}.pairsteps ol{padding-left:22px;line-height:1.5}.warnp{margin:10px 0}
 .rhythm{display:block}.rhhead{margin:2px 0 6px;font-weight:600}.rhlist{list-style:none;margin:6px 0;padding:0}.rhrow{display:flex;align-items:center;gap:10px;min-height:52px;padding:4px 8px;border-radius:10px}.rhrow.past{color:var(--mute)}.rhrow.cur{background:var(--chip);box-shadow:inset 3px 0 0 var(--pri)}.rhrow.anchor .rhl{font-weight:600}.rht{min-width:3.2em;color:var(--mute);font-variant-numeric:tabular-nums}.rhl{flex:1}.rhnow{display:inline-block;padding:0 8px;border-radius:10px;background:var(--pri);color:var(--priink);font-size:13px;font-weight:700;line-height:20px}.rhx{font-size:14px;color:var(--mute);font-weight:400}.rhlog{min-height:44px;min-width:64px;border-radius:22px;border:1px solid var(--line);background:var(--card);color:var(--ink);font-weight:600}.rhnote{background:var(--chip);border-radius:10px;padding:8px 10px;margin:6px 0}.rhnext{color:var(--mute)}.rhnight{font-size:15px}.rhnight .rhrow:not(.anchor) .rhl{font-weight:400}.rhd>summary{min-height:44px;list-style:none;display:flex;align-items:center;justify-content:space-between}.rhd>summary::-webkit-details-marker{display:none}.rhd>summary::after{content:'›';color:var(--mute)}.rhd[open]>summary::after{content:'⌄'}.rhythm *{transition:none!important;animation:none!important}.rhed{border:1px solid var(--line);border-radius:12px;margin:8px 0;padding:8px}
+
+/* 1.13.16 Between sides (App Designer HANDOFF, 3:47pm reversal): one card style day and night; quiet count-up in ink */
+.bwcard{display:block;background:var(--card);border:2px solid var(--pri);border-radius:20px;padding:14px;animation:bwin 220ms cubic-bezier(.2,.8,.2,1)}
+@keyframes bwin{from{opacity:0;transform:translateY(8px)}}
+.bwcard [data-tick]{color:var(--ink);font-variant-numeric:tabular-nums}
+.bwcard .chips{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:10px 0}
+.bwstart{width:100%;min-height:56px;border:0;border-radius:16px;background:var(--pri);color:var(--priink);font:inherit;font-weight:800;font-size:1.2rem}
+.bwdone-link{display:block;margin:6px auto 0;min-height:44px;background:none;border:0;color:var(--mute);font:inherit;font-size:.95rem;font-weight:700;text-decoration:underline}
+.bwsec{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.bwpause{min-height:44px;border-radius:10px;border:1px solid var(--line);background:var(--card);color:var(--mute);font:inherit;font-size:.9rem;font-weight:700}
+.bwcard button:active,.bwpause:active,.bwstart:active{transform:scale(.97);transition:transform 80ms ease-out}
+:root[data-night] .bwcard{animation-duration:200ms}
+@media (prefers-reduced-motion:reduce){.bwcard{animation:none}.bwcard button:active,.bwpause:active,.bwstart:active{transform:none;filter:brightness(.94)}}
+/* R1: night toast Undo outline */
+:root[data-night] #toast button{border-color:#ffd8cc}
+.pristill{display:flex;flex-wrap:wrap;gap:6px;background:var(--card);border:1px solid var(--line);border-radius:14px;padding:12px;margin:6px 0}.pristill-t{flex:1 1 100%}.pristill-b{margin-left:auto;display:flex;gap:6px}.pri-keep{background:var(--pri);color:var(--priink)}.pricap{text-align:center}.pristill .pricap{flex:1 1 100%;margin:4px 0 0}
 </style>
 </head>
 <body>
@@ -292,6 +319,7 @@ html.boardmode #toast button{min-height:88px;min-width:88px;font-size:26px;paddi
   <button data-act="tab" data-tab="more"><span aria-hidden="true">☰</span>More</button>
 </nav>
 <div id="toast" role="status" aria-live="polite"></div>
+<div id="sflive" class="sr" role="status" aria-live="polite" aria-atomic="true"></div>
 <div id="sheet" hidden></div>
 <input type="file" id="restorein" accept=".json,application/json" hidden aria-hidden="true" tabindex="-1">
 <script src="nonholders.js"></script>

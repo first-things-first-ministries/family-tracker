@@ -2,7 +2,7 @@
 // Versioned cache (stamped by build.sh), cache-first shell (instant and immune to weak Wi-Fi), and a
 // 1.13.10 AUTO update: a new worker skips waiting once its whole shell is cached, so the next open runs it. A page that
 // is already open keeps its old code in memory, and app.js reloads it onto the new version only at a safe moment.
-const VERSION = '1.13.18+202610150942';
+const VERSION = '1.13.20+202610152206';
 const C = 'melody-' + VERSION;
 const SHELL = ['./', 'app.js', 'nonholders.js', 'manifest.webmanifest', 'icons/icon-192.png', 'icons/apple-touch-icon.png', 'nosleep.mp4'];
 // 1.13.11 (hotfix): install must not fail on a briefly stale CDN copy (GitHub Pages edges cache 600 s) or a flaky network.
@@ -49,7 +49,11 @@ self.addEventListener('fetch', (e) => {
   if (e.request.mode === 'navigate') { e.respondWith(caches.open(C).then((c) => c.match('./')).then((r) => r || fetch(e.request))); return; }
   // video (board keep-awake): iOS requests it with Range and needs 206 Partial Content, so serve ranges from the cache
   if (/\.mp4$/.test(u.pathname)) { e.respondWith(rangeFromCache(e.request)); return; }
-  // shell files: cache-first; anything else (e.g. version.txt): network, falling back to cache
+  // 1.13.19: the Web App Manifest is NETWORK-FIRST (revalidated past the HTTP cache), so Add to Home Screen always reads the
+  // deployed manifest (e.g. no id/start_url since 1.13.18), never a copy cached by an older build. The cache is only the
+  // offline fallback and is refreshed on every good response. version.txt stays network-first (never cached here).
+  if (NET_FIRST.test(u.pathname)) { e.respondWith(networkFirst(e.request, u)); return; }
+  // shell files: cache-first; anything else: network, falling back to cache
   e.respondWith(caches.open(C).then(async (c) => {
     const hit = await c.match(e.request, { ignoreSearch: true });
     if (hit) return hit;
@@ -75,6 +79,19 @@ self.addEventListener('notificationclick', (e) => {
     return self.clients.openWindow('./');
   })());
 });
+
+const NET_FIRST = /\/(manifest\.webmanifest|version\.txt)$/;
+async function networkFirst(req, u) {
+  const c = await caches.open(C), key = /manifest\.webmanifest$/.test(u.pathname) ? 'manifest.webmanifest' : null;
+  try {
+    let nreq = req; if (key) { try { nreq = new Request(req, { cache: 'no-cache' }); } catch {} } // version.txt: request unchanged
+    const r = await fetch(nreq);
+    if (key && r.ok && r.type !== 'opaque') { try { await c.put(key, r.clone()); } catch {} }
+    return r;
+  } catch {
+    return (key && (await c.match(key))) || (await c.match(req, { ignoreSearch: true })) || Response.error();
+  }
+}
 
 async function rangeFromCache(req) {
   const c = await caches.open(C); let r = await c.match(req, { ignoreSearch: true });
