@@ -2,7 +2,7 @@
 // Versioned cache (stamped by build.sh), cache-first shell (instant and immune to weak Wi-Fi), and a
 // 1.13.10 AUTO update: a new worker skips waiting once its whole shell is cached, so the next open runs it. A page that
 // is already open keeps its old code in memory, and app.js reloads it onto the new version only at a safe moment.
-const VERSION = '1.13.23+202610312134';
+const VERSION = '1.13.24+202611010314';
 const C = 'melody-' + VERSION;
 const SHELL = ['./', 'app.js', 'nonholders.js', 'manifest.webmanifest', 'icons/icon-192.png', 'icons/apple-touch-icon.png', 'nosleep.mp4'];
 // 1.13.11 (hotfix): install must not fail on a briefly stale CDN copy (GitHub Pages edges cache 600 s) or a flaky network.
@@ -74,9 +74,12 @@ self.addEventListener('notificationclick', (e) => {
   e.notification.close();
   e.waitUntil((async () => {
     await bumpUsage('opened');
+    // 1.13.24 (item 7): the app counts push:opened_app exactly once per tap, in the same usage rollup (E2E sync, no new
+    // network call): a window that's already open gets one PUSH_OPENED message (no navigate, so no reload mid-timer or
+    // mid-draft); otherwise a new window opens with ?from=push, which app.js counts once and strips from the address.
     const all = await self.clients.matchAll({ type: 'window', includeUncontrolled: true });
-    for (const c of all) if ('focus' in c) return c.focus();
-    return self.clients.openWindow('./');
+    for (const c of all) if ('focus' in c) { try { c.postMessage({ type: 'PUSH_OPENED' }); } catch {} return c.focus(); }
+    return self.clients.openWindow('./?from=push');
   })());
 });
 
